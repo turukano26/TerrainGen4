@@ -5,13 +5,28 @@ from perlin_numpy import (
     generate_perlin_noise_2d, generate_perlin_noise_3d
 )
 
-def createMap():
+# Parameters
+map_size = 2048, 2048
+seed = 0
+ocatves = 5
 
-    np.random.seed(0)
-    noise = generate_fractal_noise_2d((8192, 8192), (8, 8), 5)
+
+def createMap():
+    np.random.seed(seed)
+    noise = generate_fractal_noise_2d((map_size[0], map_size[1]), (8, 8), ocatves)
+    return noise    
+
+def createExpMap():
+    exp_noise = np.exp2(createMap()*10)
+    exp_noise /= exp_noise.max()
+    return exp_noise
+    
+def plotFinalMap(noise_map):
     plt.figure()
-    plt.imshow(noise, cmap='gray', interpolation='lanczos')
+    plt.imshow(noise_map, cmap='gray', interpolation='lanczos')
     plt.colorbar()
     plt.show()
 
-createMap()
+
+noise_map =  createExpMap()
+plotFinalMap(noise_map)
